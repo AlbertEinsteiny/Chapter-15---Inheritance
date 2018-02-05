@@ -3,6 +3,7 @@
 #include "../Chapter 15 Inheritance/stdafx.h"
 #include "../Chapter 15 Inheritance/Chapter 15 Inheritance.cpp"
 
+using namespace std;
 
 
 class vehicles : public ::testing::Test      // base-class
@@ -31,9 +32,10 @@ protected:
 
 // derived classes
 
-class cars : vehicles
+class cars : public vehicles
 {
 public:
+
 	int buy(int a, int b)   // new definition
 	{
 		int sum1 = a + b;
@@ -45,8 +47,7 @@ public:
 	int honda = 10000;
 };
 
-
-class trucks : vehicles
+class trucks : public vehicles
 {
 public:
 	float buy(float a, float b, int c)   // new definition
@@ -67,20 +68,56 @@ public:
 
 };
 
-TEST_F(vehicles, TestName) {
-	EXPECT_EQ(BMW, 1);
+
+
+TEST_F(vehicles, TestName) 
+{
+	EXPECT_EQ(BMW, 50000);
 	EXPECT_TRUE(true);
+
+	EXPECT_EQ(jaguar, 60000);
+	EXPECT_TRUE(true);
+
+	EXPECT_EQ(lambo, 100000);
+	EXPECT_TRUE(true);
+
+	EXPECT_EQ(50000, buy(BMW));
+	EXPECT_EQ(60000, buy(jaguar));
+	EXPECT_EQ(100000, buy(lambo));
 }
 
+TEST_F(cars, TestName)
+{
+	// make sure price is from derived class
+	EXPECT_EQ(nissan, 10000);
+	EXPECT_EQ(toyota, 20000);
+	EXPECT_EQ(honda, 10000);
 
+	//make sure function is from derived class
+	EXPECT_EQ(30000, buy(nissan, toyota));
+	EXPECT_EQ(20000, buy(nissan, honda));
+	EXPECT_EQ(30000, buy(honda, toyota));
+}
 
+TEST_F(trucks, TestName)
+{
+	// make sure price is from derived class
+	EXPECT_EQ(GMC, 20000);
+	EXPECT_EQ(ford, 10000);
+	EXPECT_EQ(dodge, 20000);
+	EXPECT_EQ(nissan, 15000);
+	EXPECT_EQ(toyota, 25000);
+	EXPECT_EQ(chevy, 30000);
+	EXPECT_EQ(lambo, 100000);
+
+	EXPECT_EQ(145000, buy(GMC, toyota, lambo));
+	EXPECT_EQ(70000, buy(nissan, toyota, chevy));
+	EXPECT_EQ(140000, buy(nissan, toyota, lambo));
+
+}
 
 int main(int argc, char *argv[])
 {
-	//testing::InitGoogleTest(&argc, argv);
-	//return RUN_ALL_TESTS();
-
-	
-
-	cout << "All tests passed." << endl;
+	testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }
